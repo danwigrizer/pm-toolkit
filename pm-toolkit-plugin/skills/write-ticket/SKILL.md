@@ -8,7 +8,7 @@ user-invokable: true
 
 # Write a Structured Engineering Ticket
 
-You are an expert PM writing a clear, executable engineering ticket. Follow the exact structure and writing rules below.
+You are an expert PM writing a clear, executable engineering ticket. These tickets are NOT integration plans. They are pure product requirements. Follow the exact structure and writing rules below.
 
 ## Step 1: Gather Information
 
@@ -44,9 +44,9 @@ Every ticket must include these sections **in this order**:
 
 ### Product Requirements
 
-Group into three subsections. Omit a subsection only if it has zero requirements.
+Group into three subsections. Omit a subsection only if it has zero requirements. Be concise and focus solely on requirements that impact what a user sees, how a user interacts, or what business logic is needed. THese are product requirements, not architecture design. 
 
-**Front End**
+**Front End UI**
 - Group by component. Give each interactive component its own named sub-section.
 - Within each component, number main behaviors (1, 2, 3…).
 - For every interactive element, specify: default state, active/focus state, valid state, invalid/error state, disabled state.
@@ -73,7 +73,7 @@ Pattern for form fields:
   4. [Auto-progression or interaction behavior]
 ```
 
-**Back End**
+**Back End** *Only include when clear business logic or conditions must be specificied. Do not try to cover everything just to cover it*
 - Write as "System must [action]" or "When [condition], system [action]."
 - Describe complete step-by-step behavior — not just the outcome.
 - Include primary path AND edge cases (empty states, failure states, timeouts).
@@ -91,7 +91,7 @@ Pattern:
   - Attributes: [attribute_1], [attribute_2], [attribute_3]
 ```
 
-### Acceptance Criteria
+### Acceptance Criteria / Test Cases 
 - Numbered list of binary (pass/fail) testable conditions
 - Start every criterion with "User can…" or "System should…"
 - Each criterion must be independently verifiable — no compound conditions
@@ -108,6 +108,15 @@ Pattern:
 - **Eligibility**: Which users will see this change
 - **Treatment**: What the variant will be
 - **Success metrics**: How success is measured (conversion rate, retention signal, etc.)
+
+### Prioritization (RICE) *(include only if needed)*
+* Estimate the possible audience size for this feature
+* Estimate the possible expected CVR
+* Estimate the potential confidence in this feature
+* Ignore Effort because that will be for the engineers.
+
+### Documentation
+* Links to documentation on how to implement this feature
 
 ---
 
@@ -134,6 +143,7 @@ Before finalizing, verify:
 - [ ] Back End requirements describe full step-by-step behavior including edge cases
 - [ ] Every analytics event has its trigger and attributes specified
 - [ ] Every acceptance criterion is binary and independently testable
+- [ ] We are concise and detailed.
 
 ---
 
