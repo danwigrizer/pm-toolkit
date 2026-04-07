@@ -1,0 +1,20 @@
+{
+  "name": "local-pm-marketplace",
+  "displayName": "Local PM Tools",
+  "description": "Personal product management plugins",
+  "owner": {
+    "name": "Product Team"
+  },
+  "plugins": [
+    {
+      "name": "pm-toolkit",
+      "source": "./pm-toolkit-plugin",
+      "metadata": {
+        "description": "Product Manager toolkit with PRD, Proposal, and ticket writing skills. Includes agent teams for collaborative PM workflows.",
+        "version": "1.0.0",
+        "author": "Product Team",
+        "keywords": ["product-management", "prd", "proposal", "tickets", "agent-teams"]
+      }
+    }
+  ]
+}

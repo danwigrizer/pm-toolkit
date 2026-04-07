@@ -1,0 +1,11 @@
+{
+  "name": "pm-toolkit",
+  "description": "Product Manager toolkit with PRD, FAQ, and ticket writing skills. Includes agent teams for collaborative PM workflows.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Product Team"
+  },
+  "keywords": ["product-management", "prd", "press-release", "proposals", "tickets", "agent-teams"],
+  "repository": "",
+  "license": "MIT"
+}
