@@ -18,6 +18,7 @@ A comprehensive Product Manager toolkit for Claude Code featuring opinionated, d
 | `proposal-writer` | Writes future-looking Press Release + FAQ proposals |
 | `ticket-writer` | Breaks PRDs into actionable engineering tickets |
 | `reviewer-agent` | Reviews all documents for quality and consistency |
+| `strategy-writer` | Writes product strategies (NOT roadmaps) using Casey Winters & Reforge frameworks |
 
 ### 🛠️ Skills (Slash Commands)
 
@@ -30,6 +31,7 @@ A comprehensive Product Manager toolkit for Claude Code featuring opinionated, d
 | Create Flows | `/create-flows` | Create flow diagrams via the flow-mapper agent |
 | Write Proposal | `/write-proposal` | Write a Press Release + FAQ proposal |
 | Write Ticket | `/write-ticket` | Write a prescriptive engineering ticket |
+| Write Strategy | `/write-strategy` | Write a product strategy (not a roadmap) using Casey Winters & Reforge frameworks |
 
 ---
 
