@@ -49,11 +49,12 @@ Group into three subsections. Omit a subsection only if it has zero requirements
 **Front End UI**
 - Group by component. Give each interactive component its own named sub-section.
 - Within each component, number main behaviors (1, 2, 3…).
-- For every interactive element, specify: default state, active/focus state, valid state, invalid/error state, disabled state.
-- Specify responsive behavior where it differs across breakpoints.
-- Call out animations, transitions, and gesture behaviors explicitly.
+- For every interactive element, specify which states must exist (default, active/focus, valid, invalid/error, disabled) — describe **what triggers each state and how it differs in intent**, not what it looks like.
+- Specify responsive behavior where it differs across breakpoints — describe *which fields stack/reflow/hide*, not the pixel breakpoints.
+- Call out animations, transitions, and gesture behaviors at the intent level ("subtle transition", "no layout shift"), not in milliseconds or easing curves.
 - Use action verbs: "must", "should", "display", "render", "show", "hide", "enable", "disable", "validate", "format."
-- Include exact constraints: character limits, timeouts, pixel thresholds, format patterns (e.g., MM/YY, 5-digit ZIP).
+- DO include behavioral constraints: character limits, format patterns (e.g., MM/YY, 5-digit ZIP), validation rules, timing thresholds that affect *behavior* (e.g., debounce duration that changes UX, session timeout).
+- DO NOT include visual constraints: pixel heights, exact colors or token names (e.g., `red-10`, `primary-500`), opacities, margins/paddings in px, font sizes, border widths, radii, exact spacing between components. **A picture speaks a thousand words — leave the visual translation to the Designer.** See *Role boundaries* below.
 
 Pattern for interactive components:
 ```
@@ -91,18 +92,22 @@ Pattern:
   - Attributes: [attribute_1], [attribute_2], [attribute_3]
 ```
 
-### Acceptance Criteria / Test Cases 
-- Numbered list of binary (pass/fail) testable conditions
+### Acceptance Criteria / Test Cases
+- **Be concise.** Acceptance criteria are test cases, not a requirements re-statement. If something is already in Product Requirements, it does NOT need to be repeated here.
+- Cover only the **primary use cases**: the happy path, the most important failure path, and the most important eligibility/exclusion case. Aim for roughly 5–8 criteria for a typical ticket.
+- Each criterion should read like a test case a QA could execute end-to-end.
+- Numbered list of binary (pass/fail) testable conditions.
 - Start every criterion with "User can…" or "System should…"
-- Each criterion must be independently verifiable — no compound conditions
-- Cover: primary success path, error/failure states, edge cases, cross-device behavior
+- Each criterion must be independently verifiable — no compound conditions.
 
 Pattern:
 ```
 1. User can [specific action] and [expected observable result].
 2. System should [behavior] when [condition].
-3. [Component] shows [specific state] when [trigger].
 ```
+
+Good example: "User can view `#/payment-form` and see all three card-detail rows rendered as a single connected group with no margin between rows."
+Bad example (redundant — restates a requirement): "System should disable the Review Order CTA until all four fields are valid." → Drop it; it's already in the requirements.
 
 ### Experiments Setup *(include only if this is an A/B test or experiment)*
 - **Eligibility**: Which users will see this change
@@ -122,13 +127,15 @@ Pattern:
 
 ## Writing Rules
 
-**Specificity**: Always include exact numbers — character limits, validation rules, timeouts, format patterns. "Up to 9 digits" not "a number."
+**Role boundaries — PM, not Designer**: Your role is the Product Manager, not the Designer. Do not define visual constraints such as `XXpx` heights, color tokens (`red-10`, `primary-500`), opacities (`0% opacity`), margins/paddings, font sizes, border radii, exact spacing ("16px below prior container", "48px cell heights"), or any other purely visual specification. **Leave those for the Designer — a picture can speak a thousand words.** This is typically a *pre-design* product management requirements document; concise behavioral detail is better than prescriptive visual detail. Where a visual outcome matters, describe the *intent* ("connected group", "no margin between rows", "isolated to this cell") and let Design produce the artifact.
+
+**Behavioral specificity**: Always include exact numbers for things that affect *behavior* — character limits, validation rules, format patterns, timing that the user feels (auto-advance triggers, session timeouts). "Up to 9 digits" not "a number." But do NOT specify visual numbers (px, %).
 
 **User-centric language**: Describe from the user's perspective. "User can…", "System must…", "Form should…"
 
 **Complete flows**: Describe step-by-step what happens — not just the happy path. Include backspace behavior, error recovery, and empty states.
 
-**No vague language**: "Fast" is not a requirement. "< 200ms p95 response time" is.
+**No vague language**: "Fast" is not a requirement. For behavioral perf, "< 200ms p95 response time" is fine. For visual feel ("snappy", "subtle transition"), leave the exact value to Design.
 
 ---
 
@@ -138,11 +145,13 @@ Before finalizing, verify:
 - [ ] Summary states exactly what is being built in one sentence
 - [ ] Problem / Opportunity names the metric and explains the causal link
 - [ ] Every user story names a specific surface and user type
-- [ ] Every interactive Front End element has all states defined
-- [ ] All validation rules include exact constraints
+- [ ] Every interactive Front End element has all states defined (by intent/trigger, not by pixel/color)
+- [ ] All validation rules include exact behavioral constraints
+- [ ] **No visual constraints have crept in** — no pixel heights, no color tokens, no opacities, no exact margins/paddings/font sizes. If a visual outcome matters, it's described by intent and left for Design.
 - [ ] Back End requirements describe full step-by-step behavior including edge cases
 - [ ] Every analytics event has its trigger and attributes specified
 - [ ] Every acceptance criterion is binary and independently testable
+- [ ] Acceptance criteria are concise test cases covering primary use cases only — no restatement of requirements
 - [ ] We are concise and detailed.
 
 ---
