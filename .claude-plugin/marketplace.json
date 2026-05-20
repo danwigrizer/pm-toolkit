@@ -11,7 +11,6 @@
       "source": "./pm-toolkit-plugin",
       "metadata": {
         "description": "Product Manager toolkit with PRD, Proposal, and ticket writing skills. Includes agent teams for collaborative PM workflows.",
-        "version": "1.0.0",
         "author": "Product Team",
         "keywords": ["product-management", "prd", "proposal", "tickets", "agent-teams"]
       }
