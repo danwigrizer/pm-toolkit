@@ -29,6 +29,7 @@ Every ticket must include these sections **in this order**:
 - 1–2 sentences maximum
 - Format: "Implement a [component/feature] that [primary function/benefit]"
 - State what is being built and its primary purpose — nothing else
+- Frame from the **buyer/business outcome** (what changes for the user or business), not the **implementation surface** (what changes in a service, table, or class). The title and Summary describe the change in the world; implementation pointers go to *Documentation / References*. Bad: "Expand Apple Pay supported-currency list on `ecomm.viagogo.dbo.paymenttype`." Good: "Expand Apple Pay coverage on StubHub and Viagogo to additional currencies."
 
 ### Problem / Opportunity
 - 1 sentence on the problem being solved
@@ -44,7 +45,11 @@ Every ticket must include these sections **in this order**:
 
 ### Product Requirements
 
-Group into three subsections. Omit a subsection only if it has zero requirements. Be concise and focus solely on requirements that impact what a user sees, how a user interacts, or what business logic is needed. THese are product requirements, not architecture design. 
+Group into three subsections. Omit a subsection only if it has zero requirements. Be concise and focus solely on requirements that impact what a user sees, how a user interacts, or what business logic is needed. THese are product requirements, not architecture design.
+
+**Explicitly state what is OUT of scope** — v1 vs. fast-follow, what other tickets cover, what payment methods / surfaces / auth states / markets are excluded. Scope cuts shorten the ticket and prevent scope creep. (Example: "CARD only for v1; Rapipago, MODO, QR are fast-follow." Or: "Apple Pay's official 22-currency list is the gate — currencies outside it are out of scope even if Braintree supports them.")
+
+**If the work has no user-visible UI/copy change**, replace the Front End section with a single line stating that (e.g., "No user-visible UI/copy change — Apple Pay simply becomes a selectable option in the existing payment-method list."). Do not invent component states or interactions to fill the section.
 
 **Front End UI**
 - Group by component. Give each interactive component its own named sub-section.
@@ -74,11 +79,12 @@ Pattern for form fields:
   4. [Auto-progression or interaction behavior]
 ```
 
-**Back End** *Only include when clear business logic or conditions must be specificied. Do not try to cover everything just to cover it*
+**Back End** *Only include when clear business logic or conditions must be specified. Do not try to cover everything just to cover it.*
 - Write as "System must [action]" or "When [condition], system [action]."
-- Describe complete step-by-step behavior — not just the outcome.
-- Include primary path AND edge cases (empty states, failure states, timeouts).
-- Specify timing where relevant (e.g., "within 200ms", "before page renders").
+- Describe **conditions and business rules**, not step-by-step procedures or class-level wiring. The Back End section is a list of what must be true / what must happen, not a sequence diagram.
+- Cover the primary path and the material edge cases (failure, empty, timeout). Skip edge cases the existing system already handles uniformly.
+- Specify timing where relevant to behavior (e.g., "within 200ms", "before page renders") — not implementation timing.
+- **If Eng has a viable choice between integration paths**, present the options as candidates with their tradeoffs and defer the choice to Eng — do not pick the path for them. (Example: "Option A — dLocal native 3DS. Option B — Adyen Standalone 3DS with the result passed to dLocal at authorization.") Move the decision to *Open Questions*.
 - Use action verbs: "must", "should", "validate", "return", "reject", "redirect", "persist."
 
 **Analytics**
@@ -120,8 +126,16 @@ Bad example (redundant — restates a requirement): "System should disable the R
 * Estimate the potential confidence in this feature
 * Ignore Effort because that will be for the engineers.
 
-### Documentation
-* Links to documentation on how to implement this feature
+### Open Questions *(include unless there are genuinely none)*
+1–4 specific questions for Eng / Design / Risk / Data to answer before or during implementation. Use this section to **absorb uncertainty** so the rest of the ticket can stay confident and tight — without it, uncertainty leaks into hedged requirements that pad the doc.
+
+- Good: "Confirm whether Adyen Standalone 3DS authentication results are accepted by dLocal across all card schemes we acquire through dLocal, and whether liability shift survives the cross-PSP handoff."
+- Good: "Confirm display order of Kueski Pay relative to OXXO and other MX local methods."
+- Bad: "How should we build this?" — too vague; break it into specific decisions.
+
+### Documentation / References
+* Links to external documentation (vendor docs, RFCs, internal Confluence) needed to implement.
+* **Codebase pointers** (`File.cs:75`, `…/SomeService.cs`) belong here, NOT in requirements bullets. Use them to show Eng *where* the work lands and what already exists, without dictating how to change it.
 
 ---
 
@@ -136,6 +150,10 @@ Bad example (redundant — restates a requirement): "System should disable the R
 **Complete flows**: Describe step-by-step what happens — not just the happy path. Include backspace behavior, error recovery, and empty states.
 
 **No vague language**: "Fast" is not a requirement. For behavioral perf, "< 200ms p95 response time" is fine. For visual feel ("snappy", "subtle transition"), leave the exact value to Design.
+
+**Codebase as evidence, not as content + honest uncertainty.**
+- If you researched the codebase to inform the ticket, code paths and `file:line` pointers belong under *Documentation / References*, **not** in the requirements bullets. Use the codebase to **narrow** requirements ("this field already exists, no schema change needed") rather than to **dictate** implementation ("edit `File.cs:75`").
+- **Do not fabricate data you don't have.** If a current-state value is unknown (a current enabled list, an actual decline rate, an existing routing rule), say so and ask Eng to produce it — that becomes an *Open Question* or a "Eng to produce the delta" line in the requirements. Pretending to know is worse than admitting you don't, and prevents the ticket from being subtly wrong.
 
 ---
 
@@ -152,6 +170,9 @@ Before finalizing, verify:
 - [ ] Every analytics event has its trigger and attributes specified
 - [ ] Every acceptance criterion is binary and independently testable
 - [ ] Acceptance criteria are concise test cases covering primary use cases only — no restatement of requirements
+- [ ] **Length matches the work.** A config-only change is a short ticket; an experiment with eligibility logic and analytics is longer. No section was padded to look thorough.
+- [ ] **Codebase pointers (file:line) appear only in *Documentation / References***, not in requirements bullets.
+- [ ] **No fabricated current-state values** — unknown current state is in *Open Questions* or flagged as "Eng to produce."
 - [ ] We are concise and detailed.
 
 ---
