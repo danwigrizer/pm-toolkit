@@ -112,6 +112,7 @@ Pattern for form fields:
 - - Defining when a user interacted with the feature 
 - - Defining whether the action was successful 
 - **Do NOT include `experimentVariant` (or any equivalent variant/allocation field) in page event DataValue.** Page events are added so they can continue to be used *after* the experiment ends. Experiment assignment lives in the experimentation platform's join, not in the event payload. Slicing by variant is done at analysis time by joining the event to the experiment assignment, not by stamping the variant on every event.
+- **User segment attributes on DataValue must use New User vs Return User, NOT Logged-In vs Logged-Out.** Logged-in state is not the segmentation we care about at this point — new vs. return user is. If you want to include a user-segment attribute on a page event, use `isNewUser` / `isReturnUser` (or the equivalent already in use for that surface). Do not include `isLoggedIn` or `authState`.
 
 Pattern:
 ```
@@ -140,16 +141,19 @@ Bad example (redundant — restates a requirement): "System should disable the R
 
 ### Experiments Setup *(include only if this is an A/B test or experiment)*
 
-- **Participation Requirements**: What is the eligibility requirements to participate in this experiment / Which users will see this change. we want to get as close to the change as possible to be more likely to measure signal. Also include **Audience Participation Requirements**: What segment (Ex. Desktop, Mobile Web, Native, All Geos, all users, all brands, or a subset]. Unless 
+- **Participation Requirements**: What is the eligibility requirements to participate in this experiment / Which users will see this change. we want to get as close to the change as possible to be more likely to measure signal. Also include **Audience Participation Requirements**: What segment (Ex. Desktop, Mobile Web, Native, All Geos, all users, all brands, or a subset). When describing user-segment audience, use **New User vs Return User** — do NOT use Logged-In vs Logged-Out. Logged-in state is not the segmentation we care about at this point.
 - **Variant**: What the treatment will be
 - **Success metrics**: How success is measured (conversion rate etc.)
 
 
 ### Prioritization (RICE) *(include only if needed, this is used to help team prioritize)*
-* Reach: How many users are experiencing this problem and will experience this solution, as a % of all visitors to the area?
-- High = >50% of users impacted by this problem/change
-- Medium = 10-50% of users impacted by this problem/change
-- Low = <10% of users impacted by this problem/change
+
+> **Instruction to the writer:** The Reach / Impact / Confidence bands below are RULES, not suggestions. Compute the % first, then read off the band. Do NOT override the band with subjective judgment about how "important" the volume feels or how big the absolute number is. A change affecting 2% of visitors is **Low reach** even if 2% is 43,000 users per day. If you catch yourself justifying a higher band because the absolute number is large or the problem feels important, stop — that belongs in Impact reasoning, not Reach.
+
+* Reach: How many users are experiencing this problem and will experience this solution, as a **percentage of all visitors to the area** (not absolute count)?
+- High = >50% of visitors to the area impacted by this problem/change
+- Medium = 10–50% of visitors to the area impacted by this problem/change
+- Low = <10% of visitors to the area impacted by this problem/change
 
 * Impact: How painful is the problem and therefore how big of an improvement to your target metric (Conversion) do you expect by solving the problem?
 - High = Major improvement, highly noticeable to users and solving a painful problem
