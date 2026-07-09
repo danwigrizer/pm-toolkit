@@ -99,6 +99,7 @@ Pattern for form fields:
 
 - **If Eng has a viable choice between integration paths**, present the options as candidates with their tradeoffs and defer the choice to Eng — do not pick the path for them. Note this is a PRODUCT TICKET and should be focused on User Problems. Only refrence this as (Example: "Option A — dLocal native 3DS. Option B — Adyen Standalone 3DS with the result passed to dLocal at authorization.") Move the decision to *Open Questions*.
 - Use action verbs: "must", "should", "validate", "return", "reject", "redirect", "persist."
+- **Do NOT restate experiment gating in Back End.** It is presumed that the treatment logic only runs for users in the experiment variant — that is the purpose of the *Experiments Setup* section. Never write bullets like "System must only render X within the experiment allocation" or "System must check the experiment flag before showing X." That gating is implicit once *Experiments Setup* exists; repeating it in Back End is redundant and clutters the ticket.
 
 **Analytics**
 - Write as: `Track "[event_name]" when [trigger].`
