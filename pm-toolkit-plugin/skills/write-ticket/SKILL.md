@@ -111,6 +111,7 @@ Pattern for form fields:
 - - Defining when a user saw a feature 
 - - Defining when a user interacted with the feature 
 - - Defining whether the action was successful 
+- **Do NOT include `experimentVariant` (or any equivalent variant/allocation field) in page event DataValue.** Page events are added so they can continue to be used *after* the experiment ends. Experiment assignment lives in the experimentation platform's join, not in the event payload. Slicing by variant is done at analysis time by joining the event to the experiment assignment, not by stamping the variant on every event.
 
 Pattern:
 ```
