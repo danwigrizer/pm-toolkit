@@ -54,9 +54,9 @@ In [Primary Metric]
 
 ### Product Requirements
 
-- **Be concise**
+> **Instruction to the writer (do NOT include this line in the ticket output):** Be concise. This is a directive to you, not template text. Never write a "Be concise" bullet or heading inside the Product Requirements section of the generated ticket.
 
-Group into three subsections. Omit a subsection only if it has zero requirements. Be concise and focus solely on requirements that impact what a user sees, how a user interacts, or what business logic is needed. THese are product requirements, not architecture design.
+Group into three subsections. Omit a subsection only if it has zero requirements. Focus solely on requirements that impact what a user sees, how a user interacts, or what business logic is needed. These are product requirements, not architecture design.
 
 **Explicitly state what is OUT of scope** — v1 vs. fast-follow, what other tickets cover, what payment methods / surfaces / auth states / markets are excluded. Scope cuts shorten the ticket and prevent scope creep. (Example: "CARD only for v1; Rapipago, MODO, QR are fast-follow." Or: "Apple Pay's official 22-currency list is the gate — currencies outside it are out of scope even if Braintree supports them.")
 
